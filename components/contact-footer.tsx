@@ -72,7 +72,7 @@ export function ContactFooter() {
             <div className="space-y-4">
               <div className="flex items-start gap-4">
                 <MapPin className="h-5 w-5 text-[#D32F2F] mt-1 shrink-0" />
-                <p className="text-zinc-300">Yaoundé - Montée Jacko Elig-Essono, collée à Jully Voyage</p>
+                <p className="text-zinc-300">Yaoundé - Montée Jaco Elig-Essono, collée à Jully Voyage</p>
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="h-5 w-5 text-[#D32F2F] shrink-0" />
