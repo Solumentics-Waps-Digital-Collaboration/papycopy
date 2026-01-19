@@ -3,13 +3,16 @@
 import type React from "react"
 
 import { useState } from "react"
-import { MapPin, Phone, Mail, Facebook, Instagram } from "lucide-react"
+import { MapPin, Phone, Mail, Facebook, Instagram, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export function ContactFooter() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,10 +20,44 @@ export function ContactFooter() {
     message: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log(formData)
+    setIsSubmitting(true)
+    setIsSuccess(false)
+    setErrorMessage("")
+
+    try {
+      console.log('🚀 Submitting form data:', formData)
+      
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      console.log('📡 Response status:', res.status)
+      
+      const data = await res.json()
+      console.log('📦 Response data:', data)
+
+      if (!res.ok) {
+        throw new Error(data.details || data.error || 'Échec de l\'envoi')
+      }
+
+      // Success
+      setIsSuccess(true)
+      setFormData({ name: "", email: "", subject: "", message: "" }) // Reset form
+
+      setTimeout(() => setIsSuccess(false), 5000)
+    } catch (error) {
+      console.error('❌ Form submission error:', error)
+      const message = error instanceof Error ? error.message : "Une erreur s'est produite"
+      setErrorMessage(message)
+      
+      setTimeout(() => setErrorMessage(""), 5000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -33,6 +70,7 @@ export function ContactFooter() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 placeholder="Nom complet"
+                required
                 className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -40,30 +78,57 @@ export function ContactFooter() {
               <Input
                 type="email"
                 placeholder="Email"
+                required
                 className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              <Select onValueChange={(value) => setFormData({ ...formData, subject: value })}>
+              <Select 
+                required 
+                onValueChange={(value) => setFormData({ ...formData, subject: value })}
+                value={formData.subject}
+              >
                 <SelectTrigger className="bg-zinc-900 border-zinc-800 text-white">
                   <SelectValue placeholder="Sujet" />
                 </SelectTrigger>
                 <SelectContent className="bg-zinc-900 border-zinc-800">
-                  <SelectItem value="commande">Commande</SelectItem>
-                  <SelectItem value="immobilier">Immobilier</SelectItem>
-                  <SelectItem value="info">Information Générale</SelectItem>
+                  <SelectItem value="Commande">Commande</SelectItem>
+                  <SelectItem value="Immobilier">Immobilier</SelectItem>
+                  <SelectItem value="Information Générale">Information Générale</SelectItem>
                 </SelectContent>
               </Select>
               <Textarea
                 placeholder="Votre message..."
+                required
                 rows={5}
                 className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500 resize-none"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               />
-              <Button type="submit" className="w-full bg-[#D32F2F] hover:bg-[#B71C1C] text-white">
-                Envoyer le message
+              <Button 
+                type="submit" 
+                className="w-full bg-[#D32F2F] hover:bg-[#B71C1C] text-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Envoi en cours...
+                  </>
+                ) : (
+                  "Envoyer le message"
+                )}
               </Button>
+              {isSuccess && (
+                <p className="text-green-500 text-center font-medium bg-green-950/30 py-3 rounded-lg border border-green-800">
+                  ✅ Message envoyé avec succès! Nous vous répondrons bientôt.
+                </p>
+              )}
+              {errorMessage && (
+                <p className="text-red-500 text-center font-medium bg-red-950/30 py-3 rounded-lg border border-red-800">
+                  ❌ {errorMessage}
+                </p>
+              )}
             </form>
           </div>
 
@@ -80,7 +145,7 @@ export function ContactFooter() {
               </div>
               <div className="flex items-center gap-4">
                 <Mail className="h-5 w-5 text-[#D32F2F] shrink-0" />
-                <p className="text-zinc-300">contact@papycoty.com</p>
+                <p className="text-zinc-300">info@papycoty.com</p>
               </div>
             </div>
 
