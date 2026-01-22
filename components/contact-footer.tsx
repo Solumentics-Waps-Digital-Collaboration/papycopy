@@ -152,7 +152,7 @@ export function ContactFooter() {
             {/* Map Placeholder */}
             <div className="w-full h-64 rounded-lg overflow-hidden bg-zinc-800">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3980.8065454066183!2d11.516389!3d3.8480556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x108bcf0a0a0a0a0a%3A0x0!2sYaounde%2C%20Cameroon!5e0!3m2!1sen!2sus!4v1635959999999!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d842.7364980695997!2d11.521855541317747!3d3.869754482149528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x108bcf7fa4e23c45%3A0x2166cf3b671d9766!2sJully%20Voyages!5e1!3m2!1sfr!2sfr!4v1769077728805!5m2!1sfr!2sfr"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
