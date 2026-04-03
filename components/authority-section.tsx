@@ -8,9 +8,8 @@ export function AuthoritySection() {
           {/* Left - Image */}
           <div className="relative">
             <div className="relative rounded-xl shadow-2xl overflow-hidden aspect-[4/5]">
-              <Image src="/african-businessman-in-elegant-suit-shaking-hands-.jpg" alt="Le PDG avec Samuel Eto'o" fill className="object-cover" />
+              <Image src="/papy-2.jpg" alt="PAPYCOTY Excellence" fill className="object-cover" />
             </div>
-            <p className="mt-4 text-sm text-zinc-600 text-center italic">Le PDG avec Samuel Eto'o</p>
           </div>
 
           {/* Right - Content */}

@@ -5,36 +5,36 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 const businessServices = [
   {
     icon: Map,
-    title: "Immobilier & Lotissement",
-    description: "Vente de terrains titrés et lotissement sécurisé.",
+    title: "Gestion Immobilière & Foncière",
+    description: "Expertise en acquisition de terrains titrés. Nous sécurisons vos investissements immobiliers avec une rigueur absolue au Cameroun.",
   },
   {
     icon: FileCheck,
-    title: "Suivi Administratif",
-    description: "Accompagnement complet pour vos dossiers fonciers.",
+    title: "Expertise Administrative",
+    description: "Simplifiez vos démarches. Nous assurons le suivi complet de vos dossiers fonciers, de l'obtention du titre foncier à la mutation.",
   },
   {
     icon: Car,
-    title: "Vente Véhicules",
-    description: "Importation et vente de véhicules garantis.",
+    title: "Solutions Mobilité Premium",
+    description: "Importation et vente de véhicules de prestige. Une sélection rigoureuse pour garantir fiabilité, confort et standing.",
   },
 ]
 
 const fashionServices = [
   {
     icon: Scissors,
-    title: "Couture Sur Mesure",
-    description: "Création de pièces uniques adaptées à votre morphologie.",
+    title: "Grande Mesure Traditionnelle",
+    description: "Le sommet de l'élégance. Chaque pièce est conçue pour refléter votre stature et votre personnalité unique.",
   },
   {
     icon: Shirt,
-    title: "Prêt-à-Porter Premium",
-    description: "Collections exclusives pour hommes et femmes d'exception.",
+    title: "Ligne Prêt-à-Porter",
+    description: "Une collection d'exception pour l'homme d'affaires pressé qui ne transige jamais sur la qualité.",
   },
   {
     icon: Crown,
-    title: "Tenues de Cérémonie",
-    description: "Mariages, baptêmes et événements spéciaux.",
+    title: "Événements & Cérémonies",
+    description: "Sublimez vos moments forts. Mariages et réceptions officielles avec des tenues qui marquent les esprits.",
   },
 ]
 

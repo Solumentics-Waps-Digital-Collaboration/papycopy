@@ -1,0 +1,11 @@
+services:
+  web:
+    # Use the pre-built image from GitHub Container Registry
+    # IMPORTANT: Replace <your-username/repo-name> with your actual GitHub repo path (lowercase)
+    image: ghcr.io/${{ github.repository }}:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
