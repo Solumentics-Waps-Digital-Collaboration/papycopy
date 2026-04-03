@@ -6,12 +6,11 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # This will result in ghcr.io/username/repo-name
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  # Job 1: Quality Gate
-  lint:
+  # Job 1: Environment Setup & Install
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,12 +21,51 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - run: pnpm install
-      - run: pnpm lint
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
 
-  # Job 2: Build and Push to GHCR
-  build-and-push:
-    needs: lint
+  # Job 2: Quality Control (Lint & Type-Check)
+  verify:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Run Lint
+        run: pnpm lint
+      - name: Run Type-Check
+        run: pnpm exec tsc --noEmit
+
+  # Job 3: The Build Process (Only happens here)
+  # This verifies that the code is buildable before packaging
+  build:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Run pnpm build
+        run: pnpm build
+
+  # Job 4: Container Packaging & Registry Push
+  package:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -60,4 +98,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # The pnpm build happens here inside the Docker container on GitHub's infrastructure
+
+  # Job 5: Final Registry Verification
+  finalize:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Confirmation
+        run: |
+          echo "The image for ${{ env.IMAGE_NAME }} has been built and pushed to ${{ env.REGISTRY }}."
+          echo "Ready to be pulled by the server repo."
